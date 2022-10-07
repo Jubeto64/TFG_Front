@@ -16,7 +16,7 @@ httpx==0.13.3
 hyperframe==5.2.0
 Jinja2==3.0.1
 MarkupSafe==2.0.1
-numpy==1.20.1
+numpy==1.23.0
 pandas==1.2.3
 psycopg2==2.8.6
 pytz==2021.1
