@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'DjangoFront.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'TFG',
-        'USER': 'postgres',
-        'PASSWORD': '0812',
-        'HOST': '127.0.0.1',
+        'NAME': 'd5bt20pkct92ga',
+        'USER': 'orcuhfxelhdynk',
+        'PASSWORD': '89f872c5f786541b5ba3b4995c3508844f1dae348121a154edf0af25ff222926',
+        'HOST': 'ec2-54-204-241-136.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
