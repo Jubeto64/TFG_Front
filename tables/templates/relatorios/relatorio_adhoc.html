@@ -1,10 +1,9 @@
 {% extends 'base.html' %} {% block title %} Laudos {% endblock %} {% block content %}
 <div class="offset-1 col-10 list-div">
     <h1 id='name' style="text-align:center">Relatório Dinâmico</h1>
-    <div class="row" style="margin-top: 10px; margin-bottom: 30px;">
-        <div class="col-8">
-            <form method="get" id='search-form'>
-
+    <form method="get" id='search-form'>
+        <div class="row" style="margin-top: 10px; margin-bottom: 30px;">
+            <div class="col-8">
                 <h4>Filtros</h4>
 
                 <div class="form-group row " style="margin-top: 20px;">
@@ -148,85 +147,72 @@
                             <i class="bi bi-eraser-fill"></i> Limpar
                         </a>
                     </div>
-                </div>
-            </form>
-        </div>
+                </div>           
+            </div>
 
-
-        <div class="col-4">
-            <form name="tcol" onsubmit="return false">
+            <div class="col-4">
                 <h4>Campos </h4>
                 <p>Seleciones os Campos desejados no relatório:</p>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col1" onclick="toggleVis(this)" checked> Nº de Requisição
+                    <input class="form-check-input" type=checkbox name="col1" onclick="toggleVis(this)" checked value="nmr_requisicao"> Nº de Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col2" onclick="toggleVis(this)" checked> Natureza
+                    <input class="form-check-input" type=checkbox name="col2" onclick="toggleVis(this)" checked value="descricao_natureza"> Natureza
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col3" onclick="toggleVis(this)" checked> Ciência da Natureza
+                    <input class="form-check-input" type=checkbox name="col3" onclick="toggleVis(this)" checked value="ciencia"> Ciência da Natureza
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col4" onclick="toggleVis(this)" checked> Espécie
+                    <input class="form-check-input" type=checkbox name="col4" onclick="toggleVis(this)" checked value="descricao_especie"> Espécie
                 </div>
                 <div>
-<<<<<<< Updated upstream
-                    <input class="form-check-input" type=checkbox name="col18" onclick="toggleVis(this.name)" checked> Departamento da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="col18" onclick="toggleVis(this)" checked value="departamento"> Departamento da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col19" onclick="toggleVis(this.name)" checked> Regional da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="col19" onclick="toggleVis(this)" checked value="regional"> Regional da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col5" onclick="toggleVis(this.name)" checked> Município da Unidade Requisitante
-=======
-                    <input class="form-check-input" type=checkbox name="col18" onclick="toggleVis(this)" checked> Departamento da Unidade Requisitante
->>>>>>> Stashed changes
+                    <input class="form-check-input" type=checkbox name="col5" onclick="toggleVis(this)" checked value="municipio"> Município da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col19" onclick="toggleVis(this)" checked> Regional da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="col6" onclick="toggleVis(this)" checked value="comarca_da_unidade"> Unidade de Exame
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col5" onclick="toggleVis(this)" checked> Município da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="col7" onclick="toggleVis(this)" checked value="masp"> MASP
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col6" onclick="toggleVis(this)" checked> Unidade de Exame
+                    <input class="form-check-input" type=checkbox name="col8" onclick="toggleVis(this)" checked value="tipo_requisicao"> Tipo da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col7" onclick="toggleVis(this)" checked> MASP
+                    <input class="form-check-input" type=checkbox name="col9" onclick="toggleVis(this)" checked value="nmr_procedimento"> Nº de Procedimento
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col8" onclick="toggleVis(this)" checked> Tipo da Requisição
+                    <input class="form-check-input" type=checkbox name="col10" onclick="toggleVis(this)" checked value="cod_modelo_laudo"> Modelo do Laudo
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col9" onclick="toggleVis(this)" checked> Nº de Procedimento
+                    <input class="form-check-input" type=checkbox name="col11" onclick="toggleVis(this)" checked value="data_requisicao_pericia"> Data de Requisição de Perícia
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col10" onclick="toggleVis(this)" checked> Modelo do Laudo
+                    <input class="form-check-input" type=checkbox name="col12" onclick="toggleVis(this)" checked value="data_distribuicao_requisicao"> Data de Distribuição da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col11" onclick="toggleVis(this)" checked> Data de Requisição de Perícia
+                    <input class="form-check-input" type=checkbox name="col13" onclick="toggleVis(this)" checked value="data_redistribuicao"> Data de Redistribuição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col12" onclick="toggleVis(this)" checked> Data de Distribuição da Requisição
+                    <input class="form-check-input" type=checkbox name="col14" onclick="toggleVis(this)" checked value="data_devolucao_requisicao"> Data de Devolução da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col13" onclick="toggleVis(this)" checked> Data de Redistribuição
+                    <input class="form-check-input" type=checkbox name="col15" onclick="toggleVis(this)" checked value="data_aceite_requisicao"> Data de Aceite da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col14" onclick="toggleVis(this)" checked> Data de Devolução da Requisição
+                    <input class="form-check-input" type=checkbox name="col16" onclick="toggleVis(this)" checked value="data_expedicao_laudo"> Data de expedição do Laudo
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="col15" onclick="toggleVis(this)" checked> Data de Aceite da Requisição
+                    <input class="form-check-input" type=checkbox name="col17" onclick="toggleVis(this)" checked value="tempo_confeccao_laudo"> Tempo de Confecção do Laudo
                 </div>
-                <div>
-                    <input class="form-check-input" type=checkbox name="col16" onclick="toggleVis(this)" checked> Data de expedição do Laudo
-                </div>
-                <div>
-                    <input class="form-check-input" type=checkbox name="col17" onclick="toggleVis(this)" checked> Tempo de Confecção do Laudo
-                </div>
-            </form>
+            </div>       
         </div>
-    </div>
+    </form>
 
 
 
