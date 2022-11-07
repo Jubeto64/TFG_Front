@@ -132,61 +132,137 @@
                 <h4>Campos </h4>
                 <p>Seleciones os Campos desejados no relatório:</p>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="nmr_requisicao"> Nº de Requisição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="nmr_requisicao" 
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "nmr_requisicao" in campos %} checked
+                    {% endif %}> Nº de Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="descricao_natureza"> Natureza
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="descricao_natureza"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "descricao_natureza" in campos %} checked
+                    {% endif %}> Natureza
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="ciencia"> Ciência da Natureza
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="ciencia"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "ciencia" in campos %} checked
+                    {% endif %}> Ciência da Natureza
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="descricao_especie"> Espécie
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="descricao_especie"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "descricao_especie" in campos %} checked
+                    {% endif %}> Espécie
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="departamento"> Departamento da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="departamento"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "departamento" in campos %} checked
+                    {% endif %}> Departamento da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="regional"> Regional da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="regional"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "regional" in campos %} checked
+                    {% endif %}> Regional da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="municipio"> Município da Unidade Requisitante
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="municipio"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "municipio" in campos %} checked
+                    {% endif %}> Município da Unidade Requisitante
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="comarca_da_unidade"> Unidade de Exame
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="comarca_da_unidade"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "comarca_da_unidade" in campos %} checked
+                    {% endif %}> Unidade de Exame
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="masp"> MASP
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="masp"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "masp" in campos %} checked
+                    {% endif %}> MASP
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="tipo_requisicao"> Tipo da Requisição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="tipo_requisicao"      
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "tipo_requisicao" in campos %} checked
+                    {% endif %}> Tipo da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="nmr_procedimento"> Nº de Procedimento
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="nmr_procedimento"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "nmr_procedimento" in campos %} checked
+                    {% endif %}> Nº de Procedimento
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="cod_modelo_laudo"> Modelo do Laudo
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="cod_modelo_laudo"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "cod_modelo_laudo" in campos %} checked
+                    {% endif %}> Modelo do Laudo
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_requisicao_pericia"> Data de Requisição de Perícia
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_requisicao_pericia"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_requisicao_pericia" in campos %} checked
+                    {% endif %}> Data de Requisição de Perícia
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_distribuicao_requisicao"> Data de Distribuição da Requisição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_distribuicao_requisicao"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_distribuicao_requisicao" in campos %} checked
+                    {% endif %}> Data de Distribuição da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_redistribuicao"> Data de Redistribuição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_redistribuicao"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_redistribuicao" in campos %} checked
+                    {% endif %}> Data de Redistribuição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_devolucao_requisicao"> Data de Devolução da Requisição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_devolucao_requisicao"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_devolucao_requisicao" in campos %} checked
+                    {% endif %}> Data de Devolução da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_aceite_requisicao"> Data de Aceite da Requisição
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_aceite_requisicao"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_devolucao_requisicao" in campos %} checked
+                    {% endif %}> Data de Aceite da Requisição
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="data_expedicao_laudo"> Data de expedição do Laudo
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="data_expedicao_laudo"
+                    {% if not request.GET %} checked 
+                    {% elif "*" in campos %} checked
+                    {% elif "data_expedicao_laudo" in campos %} checked
+                    {% endif %}> Data de expedição do Laudo
                 </div>
                 <div>
-                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" checked value="tempo_confeccao_laudo"> Tempo de Confecção do Laudo
+                    <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="tempo_confeccao_laudo"
+                    {% if not request.GET %} checked
+                    {% elif "*" in campos %} checked
+                    {% elif "tempo_confeccao_laudo" in campos %} checked
+                    {% endif %}> Tempo de Confecção do Laudo
                 </div>
                 <button type="button" class="btn btn-allert mt-4" onclick="selecionaTodosCampos(true)">Selecionar todos os campos</button>
                 <button type="button" class="btn btn-allert mt-2" onclick="selecionaTodosCampos(false)">Deselecionar todos os campos</button>
