@@ -360,6 +360,8 @@
                 'copy', 'excel', 'pdf', 'print'
             ]
         });
+
+        document.getElementsByName('campos').forEach((el) => {toggleVis(el)});
     });
 
     function toggleVis(btn) {
