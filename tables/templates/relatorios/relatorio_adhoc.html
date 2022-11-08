@@ -264,8 +264,8 @@
                     {% elif "tempo_confeccao_laudo" in campos %} checked
                     {% endif %}> Tempo de Confecção do Laudo
                 </div>
-                <button type="button" class="btn btn-allert mt-4" onclick="selecionaTodosCampos(true)">Selecionar todos os campos</button>
-                <button type="button" class="btn btn-allert mt-2" onclick="selecionaTodosCampos(false)">Deselecionar todos os campos</button>
+                <button type="button" class="btn btn-allert mt-4" onclick="selecionaTodosCampos(true)"><i class="bi bi-check"></i> Marcar todos</button>
+                <button type="button" class="btn btn-allert mt-4" onclick="selecionaTodosCampos(false)"><i class="bi bi-x"></i> Desmarcar todos</button>
             </div>       
         </div>
         <div class="row">
@@ -304,7 +304,7 @@
                     <th name="tdescricao_natureza" id="tcol2">Natureza</th>
                     <th name="tciencia" id="tcol3">Ciência da Natureza</th>
                     <th name="tdescricao_especie" id="tcol4">Espécie</th>
-                    <th name="tcol4" id="tcol4">Classificação da Espécie</th>
+                    <th name="tdescricao_especie" id="tcol4">Classificação da Espécie</th>
                     <th name="tdepartamento" id="tcol18">Departamento da Unidade Requisitante</th>
                     <th name="tregional" id="tcol19">Regional da Unidade Requisitante</th>
                     <th name="tmunicipio" id="tcol5">Município da Unidade Requisitante</th>
@@ -328,8 +328,8 @@
                     <td name="tnmr_requisicao" id="tcol1">{{ result.nmr_requisicao }}</td>
                     <td name="tdescricao_natureza" id="tcol2">{{ result.cod_natureza_exame}}</td>
                     <td name="tciencia" id="tcol3">{{ result.cod_natureza_exame.ciencia}}</td>
-                    <td name="tcol4" id="tcol4">{{ result.cod_especie_exame}}</td>
-                    <td name="tcol4" id="tcol4" style="text-align:center">{{ result.cod_especie_exame.sigla}}</td>
+                    <td name="tdescricao_especie" id="tcol4">{{ result.cod_especie_exame}}</td>
+                    <td name="tdescricao_especie" id="tcol4" style="text-align:center">{{ result.cod_especie_exame.sigla}}</td>
                     <td name="tdepartamento" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.cod_regional.cod_departamento.departamento}}</td>
                     <td name="tregional" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.cod_regional.regional}}</td>
                     <td name="tmunicipio" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.municipio}}</td>
@@ -380,12 +380,10 @@
     }
 
     function selecionaTodosCampos(selecionar) {
-        document.getElementsByName('campos').forEach(el => el.checked = selecionar);
-        if(!selecionar){
-            alert("Selecione pelo menos 1 campo!");
-            document.getElementById('btn_pesquisar_adhoc').disabled = true;
-        }
-        else document.getElementById('btn_pesquisar_adhoc').disabled = false;
+        document.getElementsByName('campos').forEach((el) => {
+            el.checked = selecionar;
+            toggleVis(el);
+        });
     }
 
     function Checkradiobutton() {
