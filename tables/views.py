@@ -801,16 +801,16 @@ def adhoc(request):
         for key, value in filtros.items():
             if(value != ''):
                 if(key == 'datainireq'):
-                    filtros_consulta.append('data_requisicao_pericia >= ' + value)
+                    filtros_consulta.append('data_requisicao_pericia >= \'' + value + '\'')
                 
                 elif(key == 'datafimreq'):
-                    filtros_consulta.append('data_requisicao_pericia <= ' + value)
+                    filtros_consulta.append('data_requisicao_pericia <= \'' + value + '\'')
 
                 elif(key == 'datainiexp'):
-                    filtros_consulta.append('data_expedicao_laudo >= ' + value)
+                    filtros_consulta.append('data_expedicao_laudo >= \'' + value + '\'')
                 
                 elif(key == 'datafimexp'):
-                    filtros_consulta.append('data_expedicao_laudo <= ' + value)
+                    filtros_consulta.append('data_expedicao_laudo <= \'' + value + '\'')
 
                 elif(key == 'cod_natureza_exame'):
                     filtros_consulta.append('laudo.cod_natureza_exame = ' + value)
@@ -819,10 +819,13 @@ def adhoc(request):
                     filtros_consulta.append('laudo.cod_especie_exame = ' + value)
 
                 elif(key == 'municipio'):
-                    filtros_consulta.append('municipio.municipio = ' + value)
+                    filtros_consulta.append('municipio.municipio like \'%' + value + '%\'')
 
                 else:
-                    filtros_consulta.append(key + ' = ' + value)
+                    if(value.isnumeric()):
+                        filtros_consulta.append(key + ' = ' + value)
+                    else:
+                        filtros_consulta.append(key + ' like \'%' + value +'%\'')
 
 
     campos = list(map(lambda x: x.replace('municipio', 'municipio.municipio'), campos))
@@ -852,15 +855,13 @@ def adhoc(request):
     if(len(filtros_consulta) > 0):
         consulta_sql += '\nWhere ' + ' and '.join(filtros_consulta)
 
-    print(consulta_sql)
+    #print(consulta_sql)
 
+    cur = conn.cursor()
+    cur.execute(consulta_sql)
+    print(cur.fetchall())
 
-
-    # cur = conn.cursor()
-    # cur.execute('select * from laudo limit 5')
-    # print(cur.fetchall())
-
-    # cur.close()
+    cur.close()
 
 
     
@@ -903,8 +904,8 @@ def adhoc(request):
 
     try:
         data = p.get_page(page)
-        print(data.paginator.num_pages)
-        print(data.number)
+        #print(data.paginator.num_pages)
+        #print(data.number)
     except (EmptyPage, InvalidPage):
         data = p.page(p.num_pages)
     return render(request, 'relatorios/relatorio_adhoc.html', {'data':data, 'campos':campos})
