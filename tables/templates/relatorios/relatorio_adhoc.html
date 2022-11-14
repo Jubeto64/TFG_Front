@@ -57,37 +57,66 @@
 
                 <div class="form-group row" style="margin-top: 20px;">
                     <div class="form-group col-4">
-                        <label for="natu">
+                        <label for="cod_natureza_exame">
                             Código da Natureza
                         </label>
-                        <input type="text" id="codnatu" name="codnatu" class="form-control" placeholder="Código da Natureza do exame" value="{{request.GET.codnatu}}">
+                        <input type="text" id="cod_natureza_exame" name="cod_natureza_exame" class="form-control" placeholder="Código da Natureza do exame" value="{{request.GET.cod_natureza_exame}}">
                     </div>
                     <div class="form-group col-4">
-                        <label for="natu">
+                        <label for="descricao_natureza">
                             Natureza de Exame
                         </label>
-                        <input type="text" id="natu" name="natu" class="form-control" placeholder="Descrição da Natureza do exame" value="{{request.GET.natu}}" />
+                        <input type="text" id="descricao_natureza" name="descricao_natureza" class="form-control" placeholder="Descrição da Natureza do exame" value="{{request.GET.descricao_natureza}}" />
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="form-group col-3">
-                        <label for="espe">Código da Espécie</label>
-                        <input type="text" id="codespe" name="codespe" class="form-control" placeholder="Código da Espécie do exame" value="{{request.GET.codespe}}" />
+                        <label for="cod_especie_exame">Código da Espécie</label>
+                        <input type="text" id="cod_especie_exame" name="cod_especie_exame" class="form-control" placeholder="Código da Espécie do exame" value="{{request.GET.cod_especie_exame}}" />
                     </div>
                     <div class="form-group col-2">
-                        <label for="classespe">Classificação</label>
-                        <select class="form-control js-example-basic-single" name="classespe" id="natureza">
+                        <label for="sigla">Classificação</label>
+                        <select class="form-control js-example-basic-single" name="sigla" id="sigla">
                             <option value="">Selecione uma classificação</option>
-                            <option value="DI">DI</option>
-                            <option value="DEU">DEU</option>
-                            <option value="DEA">DEA</option>
+                            <option value="DI"
+                                {% if request.GET.sigla ==  'DI' %} selected
+                                {% endif %}
+                            >DI</option>
+                            <option value="DEU"
+                                {% if request.GET.sigla ==  'DEU' %} selected
+                                {% endif %}
+                            >DEU</option>
+                            <option value="DEA"
+                                {% if request.GET.sigla ==  'DEA' %} selected
+                                {% endif %}
+                            >DEA</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
-                        <label for="espe">Espécie de Exame</label>
-                        <input type="text" id="espe" name="espe" class="form-control" placeholder="Descrição da Espécie do exame" value="{{request.GET.espe}}" />
+                        <label for="descricao_especie">Espécie de Exame</label>
+                        <input type="text" id="descricao_especie" name="descricao_especie" class="form-control" placeholder="Descrição da Espécie do exame" value="{{request.GET.descricao_especie}}" />
                     </div>
+                </div>
+
+                <div class="form-group col-8">
+                    <label for="departamento">Departamento da Unidade Requisitante</label>
+                    <input type="text" id="departamento" name="departamento" class="form-control" placeholder="Departamento da Unidade Requisitante" value="{{request.GET.departamento}}">
+                </div>
+
+                <div class="form-group col-8">
+                    <label for="regional">Regional da Unidade Requisitante</label>
+                    <input type="text" id="regional" name="regional" class="form-control" placeholder="Regional da Unidade Requisitante" value="{{request.GET.regional}}">
+                </div>
+
+                <div class="form-group col-8">
+                    <label for="municipio">Município da Unidade Requisitante</label>
+                    <input type="text" id="municipio" name="municipio" class="form-control" placeholder="Unidade Requisitante" value="{{request.GET.municipio}}">
+                </div>
+
+                <div class="form-group col-8">
+                    <label for="comarca_da_unidade">Unidade de Exame</label>
+                    <input type="text" id="comarca_da_unidade" name="comarca_da_unidade" class="form-control" placeholder="Unidade de Exame" value="{{request.GET.comarca_da_unidade}}">
                 </div>
 
                 <div class="form-group col-8">
@@ -96,34 +125,29 @@
                 </div>
 
                 <div class="form-group col-8">
-                    <label for="depunires">Departamento da Unidade Requisitante</label>
-                    <input type="text" id="depunires" name="depunires" class="form-control" placeholder="Departamento da Unidade Requisitante" value="{{request.GET.depunires}}">
-                </div>
-
-                <div class="form-group col-8">
-                    <label for="regunires">Regional da Unidade Requisitante</label>
-                    <input type="text" id="regunires" name="regunires" class="form-control" placeholder="Regional da Unidade Requisitante" value="{{request.GET.regunires}}">
-                </div>
-
-                <div class="form-group col-8">
-                    <label for="mununires">Município da Unidade Requisitante</label>
-                    <input type="text" id="mununires" name="mununires" class="form-control" placeholder="Unidade Requisitante" value="{{request.GET.mununires}}">
-                </div>
-
-                <div class="form-group col-8">
-                    <label for="uniex">Unidade de Exame</label>
-                    <input type="text" id="uniex" name="uniex" class="form-control" placeholder="Unidade de Exame" value="{{request.GET.uniex}}">
-                </div>
-
-                <div class="form-group col-8">
-                    <label for="tpres">Tipo da Requisição</label>
-                    <select class="form-control js-example-basic-single" name="tpres" id="tpres">
+                    <label for="tipo_requisicao">Tipo da Requisição</label>
+                    <select class="form-control js-example-basic-single" name="tipo_requisicao" id="tipo_requisicao">
                         <option value="">Selecione um Tipo de Requisição</option>
-                        <option value="FAEP">FAEP</option>
-                        <option value="EXPEDIENTE">EXPEDIENTE</option>
-                        <option value="COMPLEMENTAR">COMPLEMENTAR</option>
-                        <option value="ESCLARECIMENTO">ESCLARECIMENTO</option>
-                        <option value="ESCLARECIMENTO_CDL">ESCLARECIMENTO_CDL</option>
+                        <option value="FAEP"
+                            {% if request.GET.tipo_requisicao ==  'FAEP' %} selected
+                            {% endif %}
+                        >FAEP</option>
+                        <option value="EXPEDIENTE"
+                            {% if request.GET.tipo_requisicao ==  'EXPEDIENTE' %} selected
+                            {% endif %}
+                        >EXPEDIENTE</option>
+                        <option value="COMPLEMENTAR"
+                            {% if request.GET.tipo_requisicao ==  'COMPLEMENTAR' %} selected
+                            {% endif %}
+                        >COMPLEMENTAR</option>
+                        <option value="ESCLARECIMENTO"
+                            {% if request.GET.tipo_requisicao ==  'ESCLARECIMENTO' %} selected
+                            {% endif %}
+                        >ESCLARECIMENTO</option>
+                        <option value="ESCLARECIMENTO_CDL"
+                            {% if request.GET.tipo_requisicao ==  'ESCLARECIMENTO_CDL' %} selected
+                            {% endif %}
+                        >ESCLARECIMENTO_CDL</option>
                     </select>
                 </div>        
             </div>

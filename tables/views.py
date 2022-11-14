@@ -1,3 +1,4 @@
+from email import message
 from subprocess import run, PIPE
 import sys
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -11,7 +12,15 @@ from django.http import JsonResponse
 from scripts import *
 import json
 from django.db.models.functions import TruncMonth
+import pika
+import psycopg2
 
+conn = psycopg2.connect(
+    host="localhost",
+    database="TFG",
+    user="postgres",
+    password="Untitled#4"
+)
 
 def especieList(request):
     desc = request.GET.get('desc')
@@ -748,17 +757,17 @@ def relatorio_unidader(request):
 
 
 def adhoc(request):
-    natu = request.GET.get('natu')
-    codnatu = request.GET.get('codnatu')
-    espe = request.GET.get('espe')
-    codespe = request.GET.get('codespe')
-    classespe = request.GET.get('classespe')
+    natu = request.GET.get('descricao_natureza')
+    codnatu = request.GET.get('cod_natureza_exame')
+    espe = request.GET.get('descricao_especie')
+    codespe = request.GET.get('cod_especie_exame')
+    classespe = request.GET.get('sigla')
     masp = request.GET.get('masp')
-    depunires = request.GET.get('depunires')
-    regunires = request.GET.get('regunires')
-    mununires = request.GET.get('mununires')
-    uniex = request.GET.get('uniex')
-    tpres = request.GET.get('tpres')
+    depunires = request.GET.get('departamento')
+    regunires = request.GET.get('regional')
+    mununires = request.GET.get('municipio')
+    uniex = request.GET.get('comarca_da_unidade')
+    tpres = request.GET.get('tipo_requisicao')
     tipodata = request.GET.get('tipodata')
     dataini = ''
     datafim = ''
@@ -768,6 +777,107 @@ def adhoc(request):
     elif tipodata == "expedicao":
         dataini = request.GET.get('datainiexp')
         datafim = request.GET.get('datafimexp')
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='task_queue', durable=True)
+
+    consulta = request.GET.copy()
+    filtros = consulta.copy()
+    campos = []
+
+    filtros_consulta = []
+
+    if(consulta != {}):
+        campos = request.GET.getlist('campos')
+        if len(campos) == 19:
+            campos = ['*']
+        consulta['campos'] = campos
+
+        filtros.pop('campos')
+        filtros.pop('page')
+        filtros.pop('tipodata')
+        for key, value in filtros.items():
+            if(value != ''):
+                if(key == 'datainireq'):
+                    filtros_consulta.append('data_requisicao_pericia >= ' + value)
+                
+                elif(key == 'datafimreq'):
+                    filtros_consulta.append('data_requisicao_pericia <= ' + value)
+
+                elif(key == 'datainiexp'):
+                    filtros_consulta.append('data_expedicao_laudo >= ' + value)
+                
+                elif(key == 'datafimexp'):
+                    filtros_consulta.append('data_expedicao_laudo <= ' + value)
+
+                elif(key == 'cod_natureza_exame'):
+                    filtros_consulta.append('laudo.cod_natureza_exame = ' + value)
+
+                elif(key == 'cod_especie_exame'):
+                    filtros_consulta.append('laudo.cod_especie_exame = ' + value)
+
+                elif(key == 'municipio'):
+                    filtros_consulta.append('municipio.municipio = ' + value)
+
+                else:
+                    filtros_consulta.append(key + ' = ' + value)
+
+
+    campos = list(map(lambda x: x.replace('municipio', 'municipio.municipio'), campos))
+
+    consulta_sql = 'select '
+    
+    consulta_sql += ','.join(campos)
+
+    consulta_sql += '''\nfrom laudo
+	 left join unidade_requisitante unires
+	 	on laudo.cod_unidade_requisitante = unires.cod_unidade_requisitante
+	 left join unidade_exame uniexa
+	 	on laudo.cod_unidade_exame = uniexa.cod_unidade_exame
+	 left join perito_responsavel perito
+	 	on laudo.masp_perito = perito.masp
+	 left join natureza_exame natureza
+	 	on laudo.cod_natureza_exame = natureza.cod_natureza_exame
+	 left join especie_exame especie
+	 	on especie.cod_especie_exame = laudo.cod_especie_exame
+	 left join municipio
+	 	on unires.geocodigo = municipio.geocodigo
+	 left join regional
+	 	on municipio.cod_regional = regional.cod_regional
+	 left join departamento
+	 	on regional.cod_departamento = departamento.cod_departamento'''
+
+    if(len(filtros_consulta) > 0):
+        consulta_sql += '\nWhere ' + ' and '.join(filtros_consulta)
+
+    print(consulta_sql)
+
+
+
+    # cur = conn.cursor()
+    # cur.execute('select * from laudo limit 5')
+    # print(cur.fetchall())
+
+    # cur.close()
+
+
+    
+
+    message = json.dumps(consulta, ensure_ascii=False).encode('utf8')
+
+    channel.basic_publish(
+        exchange='',
+        routing_key='task_queue',
+        body=message,
+        properties=pika.BasicProperties(
+            delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+        )
+    )
+
+    connection.close()
+
 
     if not(dataini and datafim):
         if natu or codnatu or espe or codespe or classespe or masp or depunires or regunires or mununires or uniex or tpres:
@@ -797,7 +907,7 @@ def adhoc(request):
         print(data.number)
     except (EmptyPage, InvalidPage):
         data = p.page(p.num_pages)
-    return render(request, 'relatorios/relatorio_adhoc.html', {'data':data})
+    return render(request, 'relatorios/relatorio_adhoc.html', {'data':data, 'campos':campos})
 
 
 def dash(request):
