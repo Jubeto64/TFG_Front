@@ -201,7 +201,7 @@
                     <input class="form-check-input" type=checkbox name="campos" onclick="toggleVis(this)" value="municipio"
                     {% if not request.GET %} checked 
                     {% elif "*" in campos %} checked
-                    {% elif "municipio" in campos %} checked
+                    {% elif "municipio.municipio" in campos %} checked
                     {% endif %}> Município da Unidade Requisitante
                 </div>
                 <div>
@@ -347,18 +347,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for result in data %}
+                {% for result in resultado %}
                 <tr>
                     <td name="tnmr_requisicao" id="tcol1">{{ result.nmr_requisicao }}</td>
-                    <td name="tdescricao_natureza" id="tcol2">{{ result.cod_natureza_exame}}</td>
-                    <td name="tciencia" id="tcol3">{{ result.cod_natureza_exame.ciencia}}</td>
-                    <td name="tdescricao_especie" id="tcol4">{{ result.cod_especie_exame}}</td>
-                    <td name="tdescricao_especie" id="tcol4" style="text-align:center">{{ result.cod_especie_exame.sigla}}</td>
-                    <td name="tdepartamento" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.cod_regional.cod_departamento.departamento}}</td>
-                    <td name="tregional" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.cod_regional.regional}}</td>
-                    <td name="tmunicipio" id="tcol5">{{ result.cod_unidade_requisitante.geocodigo.municipio}}</td>
-                    <td name="tcomarca_da_unidade" id="tcol6">{{ result.cod_unidade_exame}}</td>
-                    <td name="tmasp" id="tcol7">{{ result.masp_perito}}</td>
+                    <td name="tdescricao_natureza" id="tcol2">{{ result.descricao_natureza}}</td>
+                    <td name="tciencia" id="tcol3">{{ result.ciencia}}</td>
+                    <td name="tdescricao_especie" id="tcol4">{{ result.descricao_especie}}</td>
+                    <td name="tdescricao_especie" id="tcol4" style="text-align:center">{{ result.sigla}}</td>
+                    <td name="tdepartamento" id="tcol5">{{ result.departamento}}</td>
+                    <td name="tregional" id="tcol5">{{ result.regional}}</td>
+                    <td name="tmunicipio" id="tcol5">{{ result.municipio}}</td>
+                    <td name="tcomarca_da_unidade" id="tcol6">{{ result.comarca_da_unidade}}</td>
+                    <td name="tmasp" id="tcol7">{{ result.masp}}</td>
                     <td name="ttipo_requisicao" id="tcol8">{{ result.tipo_requisicao}}</td>
                     <td name="tnmr_procedimento" id="tcol9">{{ result.nmr_procedimento}}</td>
                     <td name="tcod_modelo_laudo" id="tcol10">{{ result.cod_modelo_laudo}}</td>
