@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %} Laudos {% endblock %} {% block content %}
+<div class="offset-1 col-10 list-div">
+    <h1 id='name' style="text-align:center">Relatório Dinâmico</h1>
+    <form method="get" id='form_email_adhoc'>
+        <div class="row" style="margin-top: 10px; margin-bottom: 30px;">
+            {% if consulta_sql ==  1 %}
+                <h4>Sucesso!</h4>
+                <p>O resultado da sua consulta será enviado para o e-mail informado.</p>
+                <div class="col-6">
+                    <a href="/ad-hoc" class="btn btn-allert">
+                        <i class="bi bi-arrow-return-left"></i> Voltar
+                    </a>
+                </div>
+            {% else %}
+                <h4>O resultado da sua consulta é muito grande para ser exibido!</h4>
+                <p>Preencha o campo abaixo com seu endereço de e-mail para receber o relatório em um arquivo .csv</p>                          
+                <div class="form-group row " style="margin-top: 20px;">
+                    <div class="form-group row">
+                        <div class="form-group col-4">
+                            <label for="descricao_natureza">
+                                E-mail
+                            </label>
+                            <input required type="email" id="email" name="email" class="form-control" placeholder="Endereço de E-mail">
+                            <input type="hidden" id="consulta_sql" name="consulta_sql">
+                        </div>
+                        <div class="form-group col-4">
+                            <button type="button" class="btn shadow-none btn-success mt-4" id="btn_email_adhoc" onclick="enviaEmail()">
+                                <i class="bi bi-send"></i> Enviar e-mail
+                            </button>                   
+                        </div>
+                        <div class="form-group col-4">
+                            <a href="/ad-hoc" class="btn btn-danger mt-4 float-end">
+                                <i class="bi bi-arrow-return-left"></i> Voltar
+                            </a>                   
+                        </div>   
+                    </div>
+                </div>
+            {% endif %}  
+        </div>
+    </form>
+</div>
+
+<script language="javascript">
+    var consulta_sql = `{{consulta_sql}}`;
+
+    function enviaEmail(){
+        document.getElementById('consulta_sql').value = consulta_sql;
+        let email = document.getElementById('email').value;
+
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+            document.getElementById('form_email_adhoc').submit();
+        }
+        else alert("Endereço de e-mail inválido!");
+    }
+</script>
+{% endblock %}

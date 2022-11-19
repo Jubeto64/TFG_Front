@@ -21,7 +21,8 @@ conn = psycopg2.connect(
     host="localhost",
     database="TFG",
     user="postgres",
-    password="Untitled#4"
+    password="Untitled#4",
+    options='-c statement_timeout=10000'
 )
 
 ps_cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -762,22 +763,6 @@ def relatorio_unidader(request):
 
 
 def adhoc(request):
-    ##rabbit mq
-    # connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    # channel = connection.channel()
-    # channel.queue_declare(queue='task_queue', durable=True)
-    # message = json.dumps(consulta, ensure_ascii=False).encode('utf8')
-    # channel.basic_publish(
-    #     exchange='',
-    #     routing_key='task_queue',
-    #     body=message,
-    #     properties=pika.BasicProperties(
-    #         delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-    #     )
-    # )
-
-    # connection.close()
-
     consulta = request.GET.copy()
     filtros = consulta.copy()
     campos = ['nmr_requisicao', 'descricao_natureza', 'ciencia', 'descricao_especie', 'departamento', 'regional', 'municipio', 'comarca_da_unidade', 'masp', 'tipo_requisicao', 'nmr_procedimento', 'cod_modelo_laudo', 'data_requisicao_pericia', 'data_distribuicao_requisicao', 'data_redistribuicao', 'data_devolucao_requisicao', 'data_aceite_requisicao', 'data_expedicao_laudo', 'tempo_confeccao_laudo']
@@ -785,11 +770,26 @@ def adhoc(request):
     filtros_consulta = []
 
     if(consulta != {}):
-        campos = request.GET.getlist('campos')
-        print('Campos\n\n\n')
-        print(campos)
-        print('\n\n\n')
+        if('email' in consulta):
+            
+            #rabbit mq
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            channel = connection.channel()
+            channel.queue_declare(queue='task_queue', durable=True)
+            message = json.dumps(consulta, ensure_ascii=False).encode('utf8')
+            channel.basic_publish(
+                exchange='',
+                routing_key='task_queue',
+                body=message,
+                properties=pika.BasicProperties(
+                    delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+                )
+            )
+            connection.close()
 
+            return render(request, 'relatorios/relatorio_adhoc_email.html', {'consulta_sql': 1})
+
+        campos = request.GET.getlist('campos')
         consulta['campos'] = campos
 
         filtros.pop('campos')
@@ -857,69 +857,32 @@ def adhoc(request):
 
     if(consulta == {}):
         consulta_sql += '\nlimit 500'
+    else:
+        consulta_sql += '\nlimit 2001'
 
     ps_cursor = conn.cursor(cursor_factory=RealDictCursor)
-    ps_cursor.execute(consulta_sql)
-    resultado = ps_cursor.fetchall()
-    ps_cursor.close()
 
-    print(consulta_sql)
+    try:        
+        ps_cursor.execute(consulta_sql)
+        resultado = ps_cursor.fetchall()
+        
+        print('comprimento')
+        print(len(resultado))
 
-    return render(request, 'relatorios/relatorio_adhoc.html', {'campos':campos, 'resultado': resultado})
+        if(len(resultado) > 2000):
+            resultado = -1
+            print('muito grande')
+    except:
+        print('Erro com a consulta')
+        resultado = -1
+    finally:
+        ps_cursor.close()
 
-
-    # natu = request.GET.get('descricao_natureza')
-    # codnatu = request.GET.get('cod_natureza_exame')
-    # espe = request.GET.get('descricao_especie')
-    # codespe = request.GET.get('cod_especie_exame')
-    # classespe = request.GET.get('sigla')
-    # masp = request.GET.get('masp')
-    # depunires = request.GET.get('departamento')
-    # regunires = request.GET.get('regional')
-    # mununires = request.GET.get('municipio')
-    # uniex = request.GET.get('comarca_da_unidade')
-    # tpres = request.GET.get('tipo_requisicao')
-    # tipodata = request.GET.get('tipodata')
-    # dataini = ''
-    # datafim = ''
-    # if tipodata == "requisicao":
-    #     dataini = request.GET.get('datainireq')
-    #     datafim = request.GET.get('datafimreq')
-    # elif tipodata == "expedicao":
-    #     dataini = request.GET.get('datainiexp')
-    #     datafim = request.GET.get('datafimexp')
-
-    # if not(dataini and datafim):
-    #     if natu or codnatu or espe or codespe or classespe or masp or depunires or regunires or mununires or uniex or tpres:
-    #         showall = LaudoModel.objects.filter(
-    #             cod_natureza_exame__descricao_natureza__icontains=natu, cod_natureza_exame__cod_natureza_exame__icontains=codnatu, cod_especie_exame__descricao_especie__icontains=espe, cod_especie_exame__sigla__icontains=classespe, cod_especie_exame__cod_especie_exame__icontains=codespe, masp_perito__icontains=masp, cod_unidade_requisitante__geocodigo__cod_regional__cod_departamento__departamento__icontains=depunires, cod_unidade_requisitante__geocodigo__cod_regional__regional__icontains=regunires, cod_unidade_requisitante__geocodigo__municipio__icontains=mununires, cod_unidade_exame__comarca_da_unidade__icontains=uniex, tipo_requisicao__icontains=tpres
-    #         ).order_by('nmr_requisicao')
-    #     else:
-    #         showall = LaudoModel.objects.all().order_by('nmr_requisicao')[:500]
-    # else:
-    #     if tipodata == "requisicao":
-    #         if natu or codnatu or espe or codespe or classespe or masp or depunires or regunires or mununires or uniex or tpres or (dataini and datafim):
-    #             showall = LaudoModel.objects.filter(
-    #                 cod_natureza_exame__descricao_natureza__icontains=natu, cod_natureza_exame__cod_natureza_exame__icontains=codnatu, cod_especie_exame__descricao_especie__icontains=espe, cod_especie_exame__sigla__icontains=classespe, cod_especie_exame__cod_especie_exame__icontains=codespe, masp_perito__icontains=masp, cod_unidade_requisitante__geocodigo__cod_regional__cod_departamento__departamento__icontains=depunires, cod_unidade_requisitante__geocodigo__cod_regional__regional__icontains=regunires, cod_unidade_requisitante__geocodigo__municipio__icontains=mununires, cod_unidade_exame__comarca_da_unidade__icontains=uniex, tipo_requisicao__icontains=tpres, data_requisicao_pericia__range=[dataini, datafim]
-    #             ).order_by('nmr_requisicao')
-    #     elif tipodata == "expedicao":
-    #         if natu or codnatu or espe or codespe or classespe or masp or depunires or regunires or mununires or uniex or tpres or (dataini and datafim):
-    #             showall = LaudoModel.objects.filter(
-    #                 cod_natureza_exame__descricao_natureza__icontains=natu, cod_natureza_exame__cod_natureza_exame__icontains=codnatu, cod_especie_exame__descricao_especie__icontains=espe, cod_especie_exame__sigla__icontains=classespe, cod_especie_exame__cod_especie_exame__icontains=codespe, masp_perito__icontains=masp, cod_unidade_requisitante__geocodigo__cod_regional__cod_departamento__departamento__icontains=depunires, cod_unidade_requisitante__geocodigo__cod_regional__regional__icontains=regunires, cod_unidade_requisitante__geocodigo__municipio__icontains=mununires, cod_unidade_exame__comarca_da_unidade__icontains=uniex, tipo_requisicao__icontains=tpres, data_expedicao_laudo__range=[dataini, datafim]
-    #             ).order_by('nmr_requisicao')
-    
-    # p = Paginator(showall,2000)
-    # page = request.GET.get('page', 1)
-
-    # try:
-    #     data = p.get_page(page)
-    #     #print(data.paginator.num_pages)
-    #     #print(data.number)
-    # except (EmptyPage, InvalidPage):
-    #     data = p.page(p.num_pages)
-    #return render(request, 'relatorios/relatorio_adhoc.html', {'data':data, 'campos':campos, 'resultado': resultado})
-
-    
+    if(resultado == -1):
+        return render(request, 'relatorios/relatorio_adhoc_email.html', {'consulta_sql':consulta_sql})
+        
+    else:
+        return render(request, 'relatorios/relatorio_adhoc.html', {'campos': campos, 'resultado': resultado})    
 
 
 def dash(request):
