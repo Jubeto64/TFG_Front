@@ -16,6 +16,9 @@ import pika
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+#rabbitmq params
+url = os.environ.get('CLOUDAMQPURL', 'amqps://sdilfkgk:g5Jm6SR3vLQOmszAb9ZN6KOwtQ0EqLii@chimpanzee.rmq.cloudamqp.com/sdilfkgk')
+params = pika.URLParameters(url)
 
 conn = psycopg2.connect(
     host="ec2-54-204-241-136.compute-1.amazonaws.com",
@@ -772,8 +775,8 @@ def adhoc(request):
     if(consulta != {}):
         if('email' in consulta):
             
-            #rabbit mq
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+            #rabbitmq
+            connection = pika.BlockingConnection(params)
             channel = connection.channel()
             channel.queue_declare(queue='task_queue', durable=True)
             message = json.dumps(consulta, ensure_ascii=False).encode('utf8')

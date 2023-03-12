@@ -1,4 +1,4 @@
-import pika, json, psycopg2, sys
+import pika, json, psycopg2, sys, os
 
 conn = psycopg2.connect(
     host="localhost",
@@ -10,7 +10,9 @@ conn = psycopg2.connect(
 # create a cursor
 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+url = os.environ.get('CLOUDAMQPURL', 'amqps://sdilfkgk:g5Jm6SR3vLQOmszAb9ZN6KOwtQ0EqLii@chimpanzee.rmq.cloudamqp.com/sdilfkgk')
+params = pika.URLParameters(url)
+connection = pika.BlockingConnection(params)
 channel = connection.channel()
 
 channel.queue_declare(queue='task_queue', durable=True)
