@@ -1,10 +1,10 @@
 import pika, json, psycopg2, sys, os
 
 conn = psycopg2.connect(
-    host="localhost",
-    database="TFG",
-    user="postgres",
-    password="Untitled#4"
+    host="ec2-54-204-241-136.compute-1.amazonaws.com",
+    database="deefli3hers06f",
+    user="wcljknecpodvsw",
+    password="9ac423b4ef32c065591d6bf56a1e6005b97e832de7075af787f4e616efb5b408"
 )
 
 # create a cursor
